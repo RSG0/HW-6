@@ -65,10 +65,29 @@ int max_element(int *arr, int N)
     return max;
 }
 
-int bucket_index(int element, int min, int max, int N)
+int bucket_index(int x, int min, int max, int num_buckets)
 {
-    return (int)((element - min) / ((max - min) / N));
+    // Handle special case where max and min are equal
+    if (max == min) {
+        return 0;
+    }
+
+    // Calculate the range of each bucket
+    double range = (double)(max - min + 1) / num_buckets;
+
+    // Calculate the index of the bucket that x belongs to
+    int index = (int)((x - min) / range);
+
+    // Make sure index is within the range [0, num_buckets - 1]
+    if (index < 0) {
+        index = 0;
+    } else if (index >= num_buckets) {
+        index = num_buckets - 1;
+    }
+
+    return index;
 }
+
 
 nodePT *putIntoBuckets(int *arr, int N)
 {
@@ -138,18 +157,37 @@ int *run_bucket_sort(char *fileName)
     return arr;
 }
 /*
-RUNNING TEST: test_bucket_index_data1
-ERROR: main.c:200 expected testArr[i], actual: index_computed[i]
-..........Bucket index computed incorrectly.
-============================================================
-RUNNING TEST: test_bucket_index_data1_rev
-ERROR: main.c:224 expected testArr[5 - i], actual: index_computed[i]
-xBucket index computed incorrectly.
-============================================================
-RUNNING TEST: test_bucket_index_data2
-ERROR: main.c:248 expected testArr[i], actual: index_computed[i]
-xBucket index computed incorrectly.
-============================================================
 RUNNING TEST: test_bucket_index_dex1
-Floating point exception (core dumped)
+ERROR: main.c:272 expected testArr[i], actual: index_computed[i]
+.............Bucket index computed incorrectly.
+============================================================
+RUNNING TEST: test_bucket_index_neg1
+============================================================
+RUNNING TEST: test_buckets_data1
+ERROR: main.c:345 assertion failed: "linkedListsEqual(expected_bucket_list, buckets[i])"
+============================================================
+RUNNING TEST: test_buckets_data1_rev
+============================================================
+RUNNING TEST: test_buckets_neg1
+ERROR: main.c:415 assertion failed: "linkedListsEqual(expected_bucket_list, buckets[i])"
+============================================================
+RUNNING TEST: test_sorting_data1
+ERROR: main.c:455 expected arr[i], actual: test_sorted[i]
+============================================================
+RUNNING TEST: test_sorting_data1_rev
+============================================================
+RUNNING TEST: test_sorting_dex1
+ERROR: main.c:498 expected arr[i], actual: test_sorted[i]
+============================================================
+RUNNING TEST: test_sorting_neg1
+ERROR: main.c:519 expected arr[i], actual: test_sorted[i]
+============================================================
+RUNNING TEST: test_sorting_data2
+ERROR: main.c:540 expected arr[i], actual: test_sorted[i]
+============================================================
+x.x.xx.xxx
+OK: 16 FAILED: 7
+
+
+
 */
