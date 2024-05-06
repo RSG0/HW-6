@@ -137,3 +137,20 @@ int *run_bucket_sort(char *fileName)
     // Return the sorted array
     return arr;
 }
+/*
+RUNNING TEST: test_bucket_index_data1
+ERROR: main.c:200 expected testArr[i], actual: index_computed[i]
+..........Bucket index computed incorrectly.
+============================================================
+RUNNING TEST: test_bucket_index_data1_rev
+ERROR: main.c:224 expected testArr[5 - i], actual: index_computed[i]
+xBucket index computed incorrectly.
+============================================================
+RUNNING TEST: test_bucket_index_data2
+ERROR: main.c:248 expected testArr[i], actual: index_computed[i]
+xBucket index computed incorrectly.
+============================================================
+RUNNING TEST: test_bucket_index_dex1
+Floating point exception (core dumped)
+
+*/
