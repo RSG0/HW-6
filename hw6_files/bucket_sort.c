@@ -1,4 +1,3 @@
-// Name StudentID
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
@@ -88,7 +87,6 @@ int bucket_index(int x, int min, int max, int num_buckets)
     return index;
 }
 
-
 nodePT *putIntoBuckets(int *arr, int N)
 {
     // Find the minimum and maximum elements in the array
@@ -110,8 +108,12 @@ nodePT *putIntoBuckets(int *arr, int N)
     // For each element in the array, find the bucket index using the function implemented
     // and insert the element into the corresponding bucket
     for (int i = 0; i < N; i++) {
-        int index = bucket_index(arr[i], min, max, N); // Fixed the use of N here
+        int index = bucket_index(arr[i], min, max, N);
         struct node *new_node = (struct node *)malloc(sizeof(struct node));
+        if (new_node == NULL) {
+            printf("Memory allocation failed\n");
+            exit(EXIT_FAILURE);
+        }
         new_node->data = arr[i];
         new_node->next = buckets[index];
         buckets[index] = new_node;
@@ -132,7 +134,7 @@ int *run_bucket_sort(char *fileName)
     int *arr = readArrayFromFile(fp, N);
 
     // Put the elements of the array into buckets
-    nodePT *buckets = putIntoBuckets(arr, N); // Fixed the use of N here
+    nodePT *buckets = putIntoBuckets(arr, N);
 
     // Rewrite the original array with the elements from the buckets to get the sorted array
     int k = 0;
@@ -156,39 +158,3 @@ int *run_bucket_sort(char *fileName)
     // Return the sorted array
     return arr;
 }
-
-/*
-RUNNING TEST: test_bucket_index_dex1
-ERROR: main.c:272 expected testArr[i], actual: index_computed[i]
-.............Bucket index computed incorrectly.
-============================================================
-RUNNING TEST: test_bucket_index_neg1
-============================================================
-RUNNING TEST: test_buckets_data1
-ERROR: main.c:345 assertion failed: "linkedListsEqual(expected_bucket_list, buckets[i])"
-============================================================
-RUNNING TEST: test_buckets_data1_rev
-============================================================
-RUNNING TEST: test_buckets_neg1
-ERROR: main.c:415 assertion failed: "linkedListsEqual(expected_bucket_list, buckets[i])"
-============================================================
-RUNNING TEST: test_sorting_data1
-ERROR: main.c:455 expected arr[i], actual: test_sorted[i]
-============================================================
-RUNNING TEST: test_sorting_data1_rev
-============================================================
-RUNNING TEST: test_sorting_dex1
-ERROR: main.c:498 expected arr[i], actual: test_sorted[i]
-============================================================
-RUNNING TEST: test_sorting_neg1
-ERROR: main.c:519 expected arr[i], actual: test_sorted[i]
-============================================================
-RUNNING TEST: test_sorting_data2
-ERROR: main.c:540 expected arr[i], actual: test_sorted[i]
-============================================================
-x.x.xx.xxx
-OK: 16 FAILED: 7
-
-
-
-*/
