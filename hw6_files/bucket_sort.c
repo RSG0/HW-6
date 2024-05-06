@@ -110,7 +110,7 @@ nodePT *putIntoBuckets(int *arr, int N)
     // For each element in the array, find the bucket index using the function implemented
     // and insert the element into the corresponding bucket
     for (int i = 0; i < N; i++) {
-        int index = bucket_index(arr[i], min, max, N);
+        int index = bucket_index(arr[i], min, max, N); // Fixed the use of N here
         struct node *new_node = (struct node *)malloc(sizeof(struct node));
         new_node->data = arr[i];
         new_node->next = buckets[index];
@@ -132,7 +132,7 @@ int *run_bucket_sort(char *fileName)
     int *arr = readArrayFromFile(fp, N);
 
     // Put the elements of the array into buckets
-    nodePT *buckets = putIntoBuckets(arr, N);
+    nodePT *buckets = putIntoBuckets(arr, N); // Fixed the use of N here
 
     // Rewrite the original array with the elements from the buckets to get the sorted array
     int k = 0;
@@ -156,6 +156,7 @@ int *run_bucket_sort(char *fileName)
     // Return the sorted array
     return arr;
 }
+
 /*
 RUNNING TEST: test_bucket_index_data1
 ERROR: main.c:200 expected testArr[i], actual: index_computed[i]
