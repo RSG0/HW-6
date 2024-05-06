@@ -1,4 +1,4 @@
-// Abubakar Abbas Kassim ID: 1002158809
+// Name StudentID
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
@@ -18,31 +18,28 @@ FILE *openFile(char *fileName)
 }
 
 // Reads a single integer from file.
-int readSizeFromFile(FILE *file)
+int readSizeFromFile(FILE *fp)
 {
     int size;
-    fscanf(file, "%d", &size);
+    fscanf(fp, "%d", &size);
     return size;
 }
 
 // Dynamically allocates an array of N integers, populates it from the file and returns it
-int *readArrayFromFile(FILE *file, int N)
+int *readArrayFromFile(FILE *fp, int N)
 {
     int *array = (int *)malloc(N * sizeof(int));
-    if (array == NULL) 
-    {
-        //NOT SUPPOSED TO HAPPEN
+    if (array == NULL) {
         printf("Memory allocation failed\n");
         exit(EXIT_FAILURE);
     }
 
     for (int i = 0; i < N; i++) {
-        fscanf(file, "%d", &array[i]);
+        fscanf(fp, "%d", &array[i]);
     }
 
     return array;
 }
-
 
 // Finds the minimum element
 int min_element(int *arr, int N)
@@ -73,8 +70,6 @@ int bucket_index(int element, int min, int max, int N)
     return (int)((element - min) / ((max - min) / N));
 }
 
-
-
 nodePT *putIntoBuckets(int *arr, int N)
 {
     // Find the minimum and maximum elements in the array
@@ -82,7 +77,7 @@ nodePT *putIntoBuckets(int *arr, int N)
     int max = max_element(arr, N);
 
     // Dynamically allocate an array of linked lists representing the buckets
-    nodePT **buckets = (nodePT **)malloc(N * sizeof(nodePT *));
+    nodePT *buckets = (nodePT *)malloc(N * sizeof(nodePT));
     if (buckets == NULL) {
         printf("Memory allocation failed\n");
         exit(EXIT_FAILURE);
@@ -93,10 +88,14 @@ nodePT *putIntoBuckets(int *arr, int N)
         buckets[i] = NULL;
     }
 
-    // For each element in the array, find the bucket index and insert the element into the corresponding bucket
+    // For each element in the array, find the bucket index using the function implemented
+    // and insert the element into the corresponding bucket
     for (int i = 0; i < N; i++) {
         int index = bucket_index(arr[i], min, max, N);
-        buckets[index] = insert(buckets[index], arr[i]);
+        struct node *new_node = (struct node *)malloc(sizeof(struct node));
+        new_node->data = arr[i];
+        new_node->next = buckets[index];
+        buckets[index] = new_node;
     }
 
     return buckets;
@@ -104,13 +103,13 @@ nodePT *putIntoBuckets(int *arr, int N)
 
 int *run_bucket_sort(char *fileName)
 {
-    // Open the file
+    // Call openFile to open a new file.
     FILE *fp = openFile(fileName);
 
-    // Read the size of the array from the file
+    // Call readSizeFromFile to read the size of the array.
     int N = readSizeFromFile(fp);
 
-    // Read the array from the file
+    // Call readArrayFromFile to read the array from the file.
     int *arr = readArrayFromFile(fp, N);
 
     // Put the elements of the array into buckets
@@ -127,7 +126,10 @@ int *run_bucket_sort(char *fileName)
     }
 
     // Destroy the buckets and the array containing them
-    // Add your code here to free memory allocated for buckets
+    for (int i = 0; i < N; i++) {
+        destroy_list(buckets[i]);
+    }
+    free(buckets);
 
     // Close the file
     fclose(fp);
