@@ -1,4 +1,4 @@
-// Name StudentID
+// Abubakar Abbas Kassim ID: 1002158809
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
