@@ -65,29 +65,10 @@ int max_element(int *arr, int N)
     return max;
 }
 
-int bucket_index(int x, int min, int max, int num_buckets)
+int bucket_index(int element, int min, int max, int N)
 {
-    // Handle special case where max and min are equal
-    if (max == min) {
-        return 0;
-    }
-
-    // Calculate the range of each bucket
-    double range = (double)(max - min + 1) / num_buckets;
-
-    // Calculate the index of the bucket that x belongs to
-    int index = (int)((x - min) / range);
-
-    // Make sure index is within the range [0, num_buckets - 1]
-    if (index < 0) {
-        index = 0;
-    } else if (index >= num_buckets) {
-        index = num_buckets - 1;
-    }
-
-    return index;
+    return (int)((element - min) / ((max - min) / N));
 }
-
 
 nodePT *putIntoBuckets(int *arr, int N)
 {
@@ -171,5 +152,4 @@ xBucket index computed incorrectly.
 ============================================================
 RUNNING TEST: test_bucket_index_dex1
 Floating point exception (core dumped)
-
 */
